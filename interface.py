@@ -29,14 +29,14 @@ def create_model_params(model_name: str, instance_prompt: str, class_prompt: str
         "seed": 2402,
         "resolution": 512,
         "train_batch_size": 1,
-        "train_text_encoder": True,
+        "train_text_encoder": False,
         "mixed_precision": "fp16",
         "use_8bit_adam": True,
         "gradient_accumulation_steps": 1,
         "learning_rate": 2e-6,
         "lr_scheduler": "constant",
         "lr_warmup_steps": 0,
-        "num_class_images": 100,
+        "num_class_images": 50,
         "sample_batch_size":  4,
         "max_train_steps":  1000,
         "save_interval":  10000,
@@ -75,7 +75,8 @@ def train(model_name: str, images: list, instance_prompt: str, class_prompt: str
 
 def inference(model_path, prompt, num_samples=4, height=512, width=512, num_inference_steps=50, guidance_scale=7.5):
     scheduler = DDIMScheduler(beta_start=0.00085, beta_end=0.012, beta_schedule="scaled_linear", clip_sample=False, set_alpha_to_one=False)
-    pipe = StableDiffusionPipeline.from_pretrained(model_path, scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16).to("cuda")
+    pipe = StableDiffusionPipeline.from_pretrained('drive/MyDrive/dreambooth/' + model_path,
+                                                   scheduler=scheduler, safety_checker=None, torch_dtype=torch.float16).to("cuda")
 
     with torch.autocast("cuda"), torch.inference_mode():
         return pipe(
