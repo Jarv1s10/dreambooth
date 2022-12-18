@@ -7,7 +7,7 @@ import secrets
 from datetime import datetime
 
 
-def train(images):
+def train(images: list, token: str):
     tqdmlog = f'/tmp/tqdm_{secrets.token_hex(nbytes=4)}.log'
     file = open(tqdmlog, 'w')
     for _ in tqdm(range(10), file=file):
@@ -28,11 +28,12 @@ with gr.Blocks() as demo:
     # gr.Markdown("Flip text or image files using this demo.")
     with gr.Tab('Train model'):
         input_images = gr.File(label='Train images', file_count='multiple', file_types=['image'])
+        token_input = gr.Text(label='Text token')
         # text_output = gr.Text(label='Output')
         tqdm_md = gr.Markdown()
         text_button = gr.Button("Train")
 
-    text_button.click(train, inputs=input_images, outputs=tqdm_md, queue=True)
+    text_button.click(train, inputs=[input_images, token_input], outputs=tqdm_md, queue=True)
 
     with gr.Tab('Inference'):
         with gr.Row():
