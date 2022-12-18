@@ -1,0 +1,12 @@
+accelerate
+torchvision
+transformers>=4.25.1
+ftfy
+tensorboard
+modelcards
+gradio
+tqdm
+torch
+diffusers
+pillow
+accelerate
